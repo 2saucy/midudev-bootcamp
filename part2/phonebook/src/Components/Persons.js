@@ -1,19 +1,22 @@
 import React from "react";
+import Button from "./Button";
 
-const Persons = ({persons, filter}) => {
-    return (
-        <div>
-            {
-                persons
-                    .filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()))
-                    .map((person) => (
-                        <div key={person.name}>
-                            <p>{person.name} - {person.number}</p>
-                        </div>
-                    ))
-            }
-        </div>
-    )
+const Persons = ({ persons, filter, deletePerson }) => {
+  return (
+    <div className="phonebook-container">
+      {
+        persons
+          .filter(({ name }) => name.toLowerCase().includes(filter))
+          .map(({ id, name, number }) => (
+            <div className="person-data" key={id}>
+              <p>Name: {name}</p>
+              <p>Number: {number}</p>
+              <Button name={name} id={id} deletePerson={deletePerson} />
+            </div>
+          ))
+      }
+    </div>
+  )
 }
 
 export default Persons
