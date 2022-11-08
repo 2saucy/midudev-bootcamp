@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/Filter.css"
 
 const Filter = ({ filter, setNewFilter }) => {
 
@@ -7,9 +8,9 @@ const Filter = ({ filter, setNewFilter }) => {
   }
 
   return (
-    <div>
-      <p>filter shown with</p>
-      <input onChange={handleChangeFilter} value={filter}></input>
+    <div className="filter-container">
+        <p>Write the name of the person: </p>
+        <input className="filter-input" onChange={handleChangeFilter} value={filter}></input>
     </div>
   )
 }

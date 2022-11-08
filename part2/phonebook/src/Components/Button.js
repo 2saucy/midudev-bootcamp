@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/Button.css"
 
 const Button = ({ name, id, deletePerson }) => {
 
@@ -8,7 +9,7 @@ const Button = ({ name, id, deletePerson }) => {
     }
   }
 
-  return <button onClick={() => { handleClick() }}>Delete</button>
+  return <button className="btn-delete" onClick={() => { handleClick() }}>Delete</button>
 }
 
 export default Button

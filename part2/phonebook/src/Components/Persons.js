@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "./Button";
+import "../styles/Persons.css"
 
 const Persons = ({ persons, filter, deletePerson }) => {
   return (

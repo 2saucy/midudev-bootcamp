@@ -6,6 +6,7 @@ import phonebookService from './services/persons'
 import Filter from './Components/Filter';
 import PersonForm from './Components/PersonForm';
 import Persons from './Components/Persons';
+import Notification from './Components/Notification';
 
 
 
@@ -18,7 +19,7 @@ function App() {
     newNumber: ""
   });
   const [filter, setNewFilter] = useState('');
-  const [error, setError] = useState('');
+  const [notification, setNotification] = useState([])
 
   // function to clear the newPerson state
   const clearNewPerson = () => {
@@ -26,6 +27,11 @@ function App() {
       newName: "",
       newNumber: ""
     })
+  }
+  const clearNotification = () => {
+    setTimeout(() => {
+      setNotification([])
+    }, 5000)
   }
 
   useEffect(() => {
@@ -37,7 +43,7 @@ function App() {
       })
       .catch((error) => {
         console.log(error)
-        setError("An error occurred when trying to get all the data from the server.")
+        setNotification(["An error occurred when trying to get all the data from the server.", 0])
       })
   }, [])
 
@@ -51,10 +57,13 @@ function App() {
       .then(res => {
         const { data } = res
         setPersons((prevPersons) => prevPersons.concat(data))
+        setNotification(["The person has been added to the phone book successfully", 1])
+        clearNotification()
         clearNewPerson()
       })
       .catch((error) => {
-        setError("An error occurred when trying to create the person.")
+        setNotification(["An error occurred when trying to create the person.", 0])
+        clearNotification()
       })
   }
 
@@ -63,9 +72,12 @@ function App() {
       .deletePer(id)
       .then(res => {
         setPersons(prevPersons => prevPersons.filter((person) => person.id !== id))
+        setNotification(["The person has been deleted from the phone book successfully", 1])
+        clearNotification()
       })
       .catch((error) => {
-        setError("An error occurred when trying to delete the person")
+        setNotification(["An error occurred when trying to delete the person", 0])
+        clearNotification()
       })
   }
 
@@ -79,17 +91,20 @@ function App() {
       .update(id, newData)
       .then(res => {
         const { data } = res
-        const newPersons = persons.map((obj) => {
-          if (obj.id === id) {
+        const newPersons = persons.map((person) => {
+          if (person.id === id) {
             return data
           }
-          return obj;
+          return person;
         })
-        console.log(newPerson)
+        setPersons(newPersons)
+        setNotification(["The person has been updated successfully", 1])
         clearNewPerson()
+        clearNotification()
       })
       .catch((error) => {
-        setError("An error occurred when trying to update the person.")
+        setNotification(["An error occurred when trying to update the person.", 0])
+        clearNotification()
       })
   }
 
@@ -97,15 +112,9 @@ function App() {
   return (
     <div className="App">
       <h1> Phone book </h1>
-      {error ? <span style={{ color: "red" }}>{error}</span> : ""}
-      <hr />
-      <h2>Filter</h2>
+      <Notification message={notification[0]} value={notification[1]} />
       <Filter filter={filter} setNewFilter={setNewFilter} />
-      <hr />
-      <h2>Add a new</h2>
       <PersonForm persons={persons} newPerson={newPerson} setNewPerson={setNewPerson} addPerson={addPerson} updatePerson={updatePerson} />
-      <hr />
-      <h2>Numbers</h2>
       <Persons persons={persons} filter={filter} deletePerson={deletePerson} />
     </div>
   );

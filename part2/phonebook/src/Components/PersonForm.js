@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/PersonForm.css"
 
 const PersonForm = ({ persons, newPerson, setNewPerson, addPerson, updatePerson }) => {
 
@@ -35,7 +36,7 @@ const PersonForm = ({ persons, newPerson, setNewPerson, addPerson, updatePerson 
         }
       }
       else {
-        alert(`${newPerson} already has that ${newNumber}`)
+        alert(`${exist.name} already has that number (${newNumber})`)
         setNewPerson({
           ...newPerson,
           newNumber: ""
@@ -48,14 +49,20 @@ const PersonForm = ({ persons, newPerson, setNewPerson, addPerson, updatePerson 
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <p>Name</p>
-      <input onChange={handleChangeName} value={newName}></input>
-      <p>Number</p>
-      <input onChange={handleChangeNumber} value={newNumber}></input>
-      <p>Click the button to add</p>
-      <button>Submit</button>
-    </form>
+    <div className="form-container">
+      <form onSubmit={handleSubmit}>
+        <div className="form-name">
+          <p>Name</p>
+          <input className="form-input" onChange={handleChangeName} value={newName}></input>
+        </div>
+        <div className="form-number">
+          <p>Number</p>
+          <input className="form-input" onChange={handleChangeNumber} value={newNumber}></input>
+        </div>
+        <p>Click the button to add</p>
+        <button className="btn-submit">Submit</button>
+      </form>
+    </div>
   )
 }
 

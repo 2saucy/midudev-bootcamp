@@ -1,0 +1,26 @@
+.form-container{
+    display: flex;
+    justify-content: center;
+}
+
+form{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.808);
+    padding: 40px 40px;
+    gap: 10px;
+}
+
+.form-input{
+    padding: 5px 20px;
+    border-radius: 3px;
+}
+
+.btn-submit{
+    background-color: rgba(30, 236, 30, 0.815);
+    color: white;
+    font-weight: bolder;
+    border: 0;
+    padding: 10px;
+}

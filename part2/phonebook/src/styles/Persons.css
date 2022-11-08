@@ -1,0 +1,13 @@
+
+.phonebook-container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.person-data{
+    border: solid 1px black;
+    border-radius: 5px;
+    padding: 10px;
+    width: 20%;
+}
