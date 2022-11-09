@@ -1,31 +1,28 @@
-import './App.css';
-import React, { useEffect, useState } from 'react';
+import './App.css'
+import React, { useEffect, useState } from 'react'
 import phonebookService from './services/persons'
 
 // Components
-import Filter from './Components/Filter';
-import PersonForm from './Components/PersonForm';
-import Persons from './Components/Persons';
-import Notification from './Components/Notification';
+import Filter from './Components/Filter'
+import PersonForm from './Components/PersonForm'
+import Persons from './Components/Persons'
+import Notification from './Components/Notification'
 
-
-
-function App() {
-
+function App () {
   // States
-  const [persons, setPersons] = useState([]);
+  const [persons, setPersons] = useState([])
   const [newPerson, setNewPerson] = useState({
-    newName: "",
-    newNumber: ""
-  });
-  const [filter, setNewFilter] = useState('');
+    newName: '',
+    newNumber: ''
+  })
+  const [filter, setNewFilter] = useState('')
   const [notification, setNotification] = useState([])
 
   // function to clear the newPerson state
   const clearNewPerson = () => {
     setNewPerson({
-      newName: "",
-      newNumber: ""
+      newName: '',
+      newNumber: ''
     })
   }
   const clearNotification = () => {
@@ -42,8 +39,7 @@ function App() {
         setPersons(data)
       })
       .catch((error) => {
-        console.log(error)
-        setNotification(["An error occurred when trying to get all the data from the server.", 0])
+        setNotification([`${error}`, 0])
       })
   }, [])
 
@@ -57,12 +53,12 @@ function App() {
       .then(res => {
         const { data } = res
         setPersons((prevPersons) => prevPersons.concat(data))
-        setNotification(["The person has been added to the phone book successfully", 1])
+        setNotification(['The person has been added to the phone book successfully', 1])
         clearNotification()
         clearNewPerson()
       })
       .catch((error) => {
-        setNotification(["An error occurred when trying to create the person.", 0])
+        setNotification([`${error}`, 0])
         clearNotification()
       })
   }
@@ -72,20 +68,20 @@ function App() {
       .deletePer(id)
       .then(res => {
         setPersons(prevPersons => prevPersons.filter((person) => person.id !== id))
-        setNotification(["The person has been deleted from the phone book successfully", 1])
+        setNotification(['The person has been deleted from the phone book successfully', 1])
         clearNotification()
       })
       .catch((error) => {
-        setNotification(["An error occurred when trying to delete the person", 0])
+        setNotification([`${error}`, 0])
         clearNotification()
       })
   }
 
   const updatePerson = (id, name, number) => {
     const newData = {
-      name: name,
-      number: number,
-      id: id
+      name,
+      number,
+      id
     }
     phonebookService
       .update(id, newData)
@@ -95,29 +91,28 @@ function App() {
           if (person.id === id) {
             return data
           }
-          return person;
+          return person
         })
         setPersons(newPersons)
-        setNotification(["The person has been updated successfully", 1])
+        setNotification(['The person has been updated successfully', 1])
         clearNewPerson()
         clearNotification()
       })
       .catch((error) => {
-        setNotification(["An error occurred when trying to update the person.", 0])
+        setNotification([`${error}`, 0])
         clearNotification()
       })
   }
 
-
   return (
-    <div className="App">
+    <div className='App'>
       <h1> Phone book </h1>
       <Notification message={notification[0]} value={notification[1]} />
       <Filter filter={filter} setNewFilter={setNewFilter} />
       <PersonForm persons={persons} newPerson={newPerson} setNewPerson={setNewPerson} addPerson={addPerson} updatePerson={updatePerson} />
       <Persons persons={persons} filter={filter} deletePerson={deletePerson} />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,15 +1,15 @@
-import React from "react";
-import Button from "./Button";
-import "../styles/Persons.css"
+import React from 'react'
+import Button from './Button'
+import '../styles/Persons.css'
 
 const Persons = ({ persons, filter, deletePerson }) => {
   return (
-    <div className="phonebook-container">
+    <div className='phonebook-container'>
       {
         persons
-          .filter(({ name }) => name.toLowerCase().includes(filter))
+          .filter(({ name }) => name.toLowerCase().includes(filter.toLowerCase()))
           .map(({ id, name, number }) => (
-            <div className="person-data" key={id}>
+            <div className='person-data' key={id}>
               <p>Name: {name}</p>
               <p>Number: {number}</p>
               <Button name={name} id={id} deletePerson={deletePerson} />
