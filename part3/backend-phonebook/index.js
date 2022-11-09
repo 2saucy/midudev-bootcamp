@@ -1,8 +1,14 @@
 const express = require('express');
 const { persons } = require('./db')
 const personsRouter = require('./routers/persons-router');
+const morgan = require('morgan')
+
 
 const app = express()
+
+morgan.token('body', (req) => JSON.stringify(req.body))
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 // parse request of the content-type - application/json
 app.use(express.json());
