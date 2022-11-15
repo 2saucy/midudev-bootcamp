@@ -1,7 +1,23 @@
+### Delete by id
+DELETE http://localhost:3001/api/persons/6372e9eec9f95f7177d94aa7 HTTP/1.1
+
+### Get all.
+GET http://localhost:3001/api/persons HTTP/1.1
+
+### Create
 POST http://localhost:3001/api/persons HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Carolinaa",
-    "number": "11111123"
+    "name": "Marian",
+    "number": "00000000"
+}
+
+### Update by id
+PUT http://localhost:3001/api/persons/6372d6c11881ca2c4991388a HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Yue",
+    "number": "213213131"
 }

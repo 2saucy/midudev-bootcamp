@@ -1,10 +1,14 @@
+require('dotenv').config({path: './.env'})
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 
-const { persons } = require('./db')
-const personsRouter = require('./routers/persons-router')
+// Connect to mongodb
+require('./config/db-connection')
+const Person = require('./models/Person')
 
+
+const personsRouter = require('./routers/persons-router')
 
 const app = express()
 
@@ -28,12 +32,12 @@ app.get('/', (req, res) => {
 
 app.get('/info', (req, res) => {
 	res.send(`
-        <p>Phonebook has info for ${persons.length} people.</p>
+        <p>Phonebook has info for ${Person.find({})} people.</p>
         <p>${new Date()}</p>
         `)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT
 
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`)

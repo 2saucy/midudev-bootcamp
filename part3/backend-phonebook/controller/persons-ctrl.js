@@ -1,50 +1,61 @@
-const { persons } = require('../db')
-
-const generateId = () => {
-	const maxId = persons.length > 0
-		? Math.max(...persons.map(n => n.id))
-		: 0
-	return maxId + 1
-}
+const Person = require('../models/Person')
 
 const getAll = (req, res) => {
-	res.send(persons)
+	Person.find({})
+		.then(persons => {
+			res.json(persons)
+		})
+		.catch(err => {
+			console.log(err)
+		})
 }
 
 const getById = (req, res) => {
 	const id = req.params.id
-	const data = persons.find((person) => person.id == id)
-	if (data) {
-		res.send(data)
-	}
-	else {
-		res.status(404).send('We can\'t find a person with that id.')
-	}
+	Person.find({ _id: id })
+		.then(person => {
+			res.json(person)
+		})
+		.catch(err => {
+			console.log(err)
+		})
 }
 
 const deleteById = (req, res) => {
 	const id = req.params.id
-	const index = persons.findIndex((person) => person.id == id)
 
-	if (index !== -1) {
-		persons.splice(index, 1)
-		res.send(persons)
-	}
-	else {
-		res.status(404).send('We can\'t find a person with that id.')
-	}
+	Person.findByIdAndRemove(id)
+		.then(result => {
+			if(result){
+				res.status(204).send(result)
+			}
+			else{
+				res.status(404).send(' Person doesn\'t exist or is already deleted. ')
+			}
+		})
+		.catch(err => {
+			console.log(err)
+      
+		})
 }
 
 const update = (req, res) => {
 	const id = req.params.id
-	const index = persons.findIndex((person) => person.id == id)
-	if (index !== -1) {
-		persons[index].number = req.body.number
-		res.send(persons[index])
+	const {name, number} = req.body
+	
+	const newPersonInfo = {
+		name: name,
+		number: number
 	}
-	else {
-		res.status(404).send('We can\'t find a person with that id.')
-	}
+
+	// alway put the {new:true} to get the result already UPDATED
+	Person.findByIdAndUpdate(id, newPersonInfo, { new: true })
+		.then((result) => {
+			res.json(result)
+		})
+		.catch((err) => {
+			console.log(err)
+		})
 }
 
 const create = (req, res) => {
@@ -57,26 +68,16 @@ const create = (req, res) => {
 		return
 	}
 
-	const id = generateId()
-
-	const newPerson = {
+	const newPerson = new Person({
 		name: req.body.name,
-		number: req.body.number,
-		id: id
-	}
+		number: req.body.number
+	})
 
-	const verifyName = persons.find((person) => person.name === newPerson.name)
-
-	if (verifyName) {
-		res.status(406).send({
-			message: 'Name already exist in the phonebook.'
+	newPerson.save()
+		.then(result => {
+			res.json(result)
 		})
-		return
-	}
-	else {
-		persons.push(newPerson)
-		res.send(newPerson)
-	}
+
 }
 
 module.exports = {
