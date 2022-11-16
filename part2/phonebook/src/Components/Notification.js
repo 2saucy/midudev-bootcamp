@@ -1,13 +1,14 @@
 import React from 'react'
 import '../styles/Notification.css'
 
-const Notification = ({ message, value }) => {
-  if (value === 1) {
-    return <span className='success-notification'>{message}</span>
-  } else if (value === 0) {
+const Notification = ({ notification }) => {
+  const {message, error} = notification
+  
+  if(error){
     return <span className='error-notification'>{message}</span>
-  } else {
-    return null
+  }
+  else{
+    return <span className='success-notification'>{message}</span>
   }
 }
 

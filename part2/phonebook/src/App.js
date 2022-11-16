@@ -11,23 +11,29 @@ import Notification from './Components/Notification'
 function App () {
   // States
   const [persons, setPersons] = useState([])
+  const [filter, setNewFilter] = useState('')
   const [newPerson, setNewPerson] = useState({
     newName: '',
     newNumber: ''
   })
-  const [filter, setNewFilter] = useState('')
-  const [notification, setNotification] = useState([])
+  const [notification, setNotification] = useState({
+    message: '',
+    error: false
+  })
 
-  // function to clear the newPerson state
   const clearNewPerson = () => {
     setNewPerson({
       newName: '',
       newNumber: ''
     })
   }
+
   const clearNotification = () => {
     setTimeout(() => {
-      setNotification([])
+      setNotification({
+        message: '',
+        error: false
+      })
     }, 5000)
   }
 
@@ -38,9 +44,14 @@ function App () {
         const { data } = res
         setPersons(data)
       })
-      .catch((error) => {
-        setNotification([`${error}`, 0])
+      .catch((err) => {
+        const message = err.response.data.message
+        setNotification({
+          message: message,
+          error: true
+        })
       })
+      clearNotification()
   }, [])
 
   const addPerson = () => {
@@ -53,14 +64,20 @@ function App () {
       .then(res => {
         const { data } = res
         setPersons((prevPersons) => prevPersons.concat(data))
-        setNotification(['The person has been added to the phone book successfully', 1])
-        clearNotification()
-        clearNewPerson()
+        setNotification({
+          message: 'The person has been added to the phone book successfully',
+          error: false
+        })
       })
-      .catch((error) => {
-        setNotification([`${error}`, 0])
-        clearNotification()
+      .catch((err) => {
+        const message = err.response.data.message
+        setNotification({
+          message: message,
+          error: true
+        })
       })
+      clearNewPerson()
+      clearNotification()
   }
 
   const deletePerson = (id) => {
@@ -68,13 +85,20 @@ function App () {
       .deletePer(id)
       .then(res => {
         setPersons(prevPersons => prevPersons.filter((person) => person.id !== id))
-        setNotification(['The person has been deleted from the phone book successfully', 1])
-        clearNotification()
+        setNotification({
+          message: 'The person has been deleted from the phone book successfully',
+          error: false
+        })
       })
-      .catch((error) => {
-        setNotification([`${error}`, 0])
-        clearNotification()
+      .catch((err) => {
+        console.log(err)
+        const message = err.response.data.message
+        setNotification({
+          message: message,
+          error: true
+        })
       })
+      clearNotification()
   }
 
   const updatePerson = (id, name, number) => {
@@ -94,20 +118,26 @@ function App () {
           return person
         })
         setPersons(newPersons)
-        setNotification(['The person has been updated successfully', 1])
-        clearNewPerson()
-        clearNotification()
+        setNotification({
+          message: 'The person has been updated successfully',
+          error: false
+        })
       })
-      .catch((error) => {
-        setNotification([`${error}`, 0])
-        clearNotification()
+      .catch((err) => {
+        const message = err.response.data.message
+        setNotification({
+          message: message,
+          error: true
+        })
       })
+      clearNewPerson()
+      clearNotification()
   }
 
   return (
     <div className='App'>
       <h1> Phone book </h1>
-      <Notification message={notification[0]} value={notification[1]} />
+      <Notification notification={notification} />
       <Filter filter={filter} setNewFilter={setNewFilter} />
       <PersonForm persons={persons} newPerson={newPerson} setNewPerson={setNewPerson} addPerson={addPerson} updatePerson={updatePerson} />
       <Persons persons={persons} filter={filter} deletePerson={deletePerson} />
