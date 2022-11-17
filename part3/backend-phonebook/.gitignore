@@ -1,5 +1,5 @@
-#request
-request/
+# Rest Client http.
+.http
 
 # Logs
 logs

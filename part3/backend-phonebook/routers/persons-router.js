@@ -1,6 +1,5 @@
-const person = require('../controller/persons-ctrl')
+const person = require('../controllers/persons-ctrl')
 const router = require('express').Router()
-const handleErrors = require('../middlewares/handleErrors.js')
 
 // get all persons
 router.get('/', person.getAll)
@@ -16,7 +15,5 @@ router.put('/:id', person.update)
 
 // create a person
 router.post('/', person.create)
-
-router.use(handleErrors)
 
 module.exports = router
