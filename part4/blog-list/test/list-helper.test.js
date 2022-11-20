@@ -1,13 +1,13 @@
 const listHelper = require('../utils/list_helper')
 
-test('dummy returns one', () => {
+test.skip('dummy returns one', () => {
   const blogs = []
 
   const result = listHelper.dummy(blogs)
   expect(result).toBe(1)
 })
 
-describe('total likes', () => {
+describe.skip('total likes', () => {
   const listWithOneBlog = [
     {
       _id: '5a422aa71b54a676234d17f8',
@@ -58,5 +58,95 @@ describe('total likes', () => {
   test('of a bigger list is calculated right', () => {
     const result = listHelper.totalLikes(listWithManyBlogs)
     expect(result).toBe(15)
+  })
+})
+
+describe.skip('favorite blogs', () => {
+  const blogs = [
+    {
+      _id: '54a676234d17f85a422aa71b',
+      title: 'The correct way to use your habilities',
+      author: 'sinatraa',
+      url: 'http://www.aimtrainersdontwork.com/sinatraa/The-correct-way-to use-your-habilities',
+      likes: 2,
+      __v: 0
+    },
+    {
+      _id: '76234d5a422aa71b54a617f8',
+      title: 'From iron to inmortal in one day',
+      author: 'tarik',
+      url: 'http://www.aimtrainersdontwork.com/tarik/From-iron-to-inmortal-in-one-day',
+      likes: 7,
+      __v: 0
+    },
+    {
+      _id: 'aa71b54a675a4226234d17f8',
+      title: 'How to aim like a pro',
+      author: 'TenZ',
+      url: 'http://www.aimtrainersdontwork.com/tenz/How-to-aim-like-a-pro',
+      likes: 5,
+      __v: 0
+    },
+    {
+      _id: 'd17f85a422aa71b54a676234',
+      title: 'How I reach top 1 Radiant',
+      author: 'tarik',
+      url: 'http://www.aimtrainersdontwork.com/tarik/How-I-reach-top-1-Radiant',
+      likes: 15,
+      __v: 0
+    }
+  ]
+
+  test('return the blog with most likes', () => {
+    const result = listHelper.favoriteBlog(blogs)
+    expect(result).toEqual({
+      title: 'How I reach top 1 Radiant',
+      author: 'tarik',
+      likes: 15
+    })
+  })
+})
+
+describe.skip('author with most blogs', () => {
+  const blogs = [
+    {
+      _id: '54a676234d17f85a422aa71b',
+      title: 'The correct way to use your habilities',
+      author: 'TenZ',
+      url: 'http://www.aimtrainersdontwork.com/sinatraa/The-correct-way-to use-your-habilities',
+      likes: 2,
+      __v: 0
+    },
+    {
+      _id: '76234d5a422aa71b54a617f8',
+      title: 'From iron to inmortal in one day',
+      author: 'tarik',
+      url: 'http://www.aimtrainersdontwork.com/tarik/From-iron-to-inmortal-in-one-day',
+      likes: 7,
+      __v: 0
+    },
+    {
+      _id: 'aa71b54a675a4226234d17f8',
+      title: 'How to aim like a pro',
+      author: 'tarik',
+      url: 'http://www.aimtrainersdontwork.com/tenz/How-to-aim-like-a-pro',
+      likes: 5,
+      __v: 0
+    },
+    {
+      _id: 'd17f85a422aa71b54a676234',
+      title: 'How I reach top 1 Radiant',
+      author: 'tarik',
+      url: 'http://www.aimtrainersdontwork.com/tarik/How-I-reach-top-1-Radiant',
+      likes: 15,
+      __v: 0
+    }
+  ]
+  test('return the author with more blogs, and the number of blogs', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual({
+      author: 'tarik',
+      blogs: 3
+    })
   })
 })

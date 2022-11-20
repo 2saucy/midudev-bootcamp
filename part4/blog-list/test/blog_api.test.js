@@ -1,0 +1,26 @@
+const mongoose = require('mongoose')
+const supertest = require('supertest')
+const app = require('../app')
+
+const api = supertest(app)
+
+test('blogs are returned as json', async () => {
+  await api
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+})
+
+test('there are two notes', async () => {
+  const res = await api.get('/api/blogs')
+  expect(res.body).toHaveLength(1)
+})
+
+test('guchooo makes the first blog', async () => {
+  const res = await api.get('/api/blogs')
+  expect(res.body[0].author).toBe('guchooo')
+})
+
+afterAll(() => {
+  mongoose.connection.close()
+})

@@ -10,10 +10,13 @@ const app = express()
 // Connect to MongoDB
 logger.info(`Connecting to:\n${MONGO_DB_URI}`)
 
-mongoose
-  .connect(MONGO_DB_URI)
-  .then(() => logger.info('Connected to MongoDB'))
-  .catch((err) => logger.error('Error connecting to MongoDB', err.message))
+const connectDb = async () => {
+  await mongoose.connect(MONGO_DB_URI)
+    .then(() => logger.info('Connected to MongoDB'))
+    .catch((err) => logger.error('Error connecting to MongoDB', err.message))
+}
+
+connectDb().catch(err => logger.error(err))
 
 // middlewares
 app.use(cors())
