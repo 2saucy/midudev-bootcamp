@@ -3,22 +3,27 @@ const { Schema, model } = require('mongoose')
 const blogSchema = new Schema({
   title: {
     type: String,
-    minlength: 4,
     required: true
   },
   author: {
     type: String,
-    minlength: 4,
     required: true
   },
   url: {
     type: String,
-    minlength: 10,
     required: true
   },
   likes: {
     type: Number,
-    required: true
+    default: 0
+  }
+})
+
+blogSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id
+    delete returnedObject._id
+    delete returnedObject.__v
   }
 })
 
